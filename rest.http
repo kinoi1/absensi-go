@@ -1,0 +1,8 @@
+POST http://localhost:8080/checkin
+Content-Type: application/json
+
+{
+    "title": "Hello",
+    "body": "Testing API",
+    "userId": 1
+}
