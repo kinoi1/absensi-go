@@ -1,11 +1,27 @@
 package routes
 
 import (
-    "go-absensi/handlers"
+	"go-absensi/controllers"
 
-    "github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin"
 )
 
 func SetupRoutes(r *gin.Engine) {
-    r.POST("/checkin", handlers.CheckIn)
+
+	r.GET("/", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"message": "Absensi API Running",
+		})
+	})
+
+	api := r.Group("/api")
+	{
+		api.GET("/hello", controllers.Hello)
+		api.GET("/attendance", controllers.AttendanceIndex)
+	}
+	auth := r.Group("/auth")
+	{
+		auth.POST("/login", controllers.LoginHandler)
+		auth.POST("/refresh", controllers.RefreshHandler)
+	}
 }

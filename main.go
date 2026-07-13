@@ -1,37 +1,28 @@
 package main
 
 import (
-    "go-absensi/config"
-    "go-absensi/models"
-    "go-absensi/routes"
+	"go-absensi/config"
+	"go-absensi/routes"
+	"go-absensi/seeders"
 
-    "github.com/gin-gonic/gin"
+	"github.com/gin-contrib/cors"
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
 
-    // Connect database
-    config.ConnectDB()
+	// Connect database
+	config.ConnectDB()
+	config.MigrateDB()
+	seeders.SeedAttendance()
+	seeders.SeedUsers()
+	// Init Gin
+	r := gin.Default()
 
-    // Migration
-    config.DB.AutoMigrate(
-        &models.Users{},
-        &models.Attendance{},
-    )
+	r.Use(cors.New(config.CORSConfig()))
+	// Routes
+	routes.SetupRoutes(r)
 
-    // Init Gin
-    r := gin.Default()
-
-    // Routes
-    routes.SetupRoutes(r)
-
-    // Default route
-    r.GET("/", func(c *gin.Context) {
-        c.JSON(200, gin.H{
-            "message": "Absensi API Running",
-        })
-    })
-
-    // Run server
-    r.Run(":8080")
+	// Run server
+	r.Run(":8080")
 }
