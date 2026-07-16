@@ -22,6 +22,7 @@ func main() {
 	r.Use(cors.New(config.CORSConfig()))
 	// Routes
 	routes.SetupRoutes(r)
+	routes.SetupAuthRoutes(r)
 
 	// Run server
 	r.Run(":8080")

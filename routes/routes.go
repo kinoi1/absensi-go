@@ -19,9 +19,5 @@ func SetupRoutes(r *gin.Engine) {
 		api.GET("/hello", controllers.Hello)
 		api.GET("/attendance", controllers.AttendanceIndex)
 	}
-	auth := r.Group("/auth")
-	{
-		auth.POST("/login", controllers.LoginHandler)
-		auth.POST("/refresh", controllers.RefreshHandler)
-	}
+
 }
